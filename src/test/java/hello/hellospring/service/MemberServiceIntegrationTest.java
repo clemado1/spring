@@ -16,7 +16,7 @@ class MemberServiceIntegrationTest {
 
     @Autowired MemberService memberService;
     @Autowired
-    MemberRepository memoryRepository;
+    MemberRepository memberRepository;
 
     @Test
     void 회원가입() {
