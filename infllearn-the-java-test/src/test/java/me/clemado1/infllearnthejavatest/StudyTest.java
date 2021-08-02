@@ -1,17 +1,24 @@
 package me.clemado1.infllearnthejavatest;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.*;
 
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
     @Test
+    @EnabledOnOs({OS.LINUX, OS.WINDOWS})
+    @EnabledOnJre({JRE.JAVA_11, JRE.JAVA_13, JRE.JAVA_14})
     @DisplayName("스터디 만들기\uD83D\uDC4D")
-   void create_new_study() {
+    void create_new_study() {
+        // assumeTrue("LOCAL".equalsIgnoreCase(System.getenv("TEST_ENV")));
+        assumingThat("LOCAL".equalsIgnoreCase(System.getenv("TEST_ENV")), () -> System.out.println("local"));
+
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Study(-10));
         assertEquals("스터디 최대 참석 가능 인원은 0보다 커야한다.", exception.getMessage());
         assertTimeout(Duration.ofMillis(100), () -> {
@@ -19,7 +26,11 @@ class StudyTest {
             // Thread.sleep(300);
         });
         // TODO: ThreadLocal와 assertTimeoutPreemptively를 같이 사용할 시 예상하지 못한 결과가 나올 수 있음.
+    }
 
+    @Test
+    @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "LOCAL")
+    void create_new_study_again() {
         Study study = new Study(10);
 
         assertAll(
@@ -27,12 +38,6 @@ class StudyTest {
                 () -> assertEquals(StudyStatus.DRAFT, study.getStudyStatus(), () -> "스터디를 처음 만들면 " + StudyStatus.DRAFT + " 상태이어야 한다."),
                 () -> assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야한다.")
         );
-    }
-
-    @Test
-    @Disabled
-    void create_new_study_again() {
-        System.out.println("create1");
     }
 
     @BeforeAll
