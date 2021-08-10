@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
 
 import java.time.Duration;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
@@ -11,8 +12,7 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
-    @Test
-    @Tag("fast")
+    @FastTest
     @EnabledOnOs({OS.LINUX, OS.WINDOWS})
     @EnabledOnJre({JRE.JAVA_11, JRE.JAVA_13, JRE.JAVA_14})
     @DisplayName("스터디 만들기\uD83D\uDC4D")
@@ -29,8 +29,7 @@ class StudyTest {
         // TODO: ThreadLocal와 assertTimeoutPreemptively를 같이 사용할 시 예상하지 못한 결과가 나올 수 있음.
     }
 
-    @Test
-    @Tag("slow")
+    @SlowTest
     @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "LOCAL")
     void create_new_study_again() {
         Study study = new Study(10);
@@ -40,6 +39,18 @@ class StudyTest {
                 () -> assertEquals(StudyStatus.DRAFT, study.getStudyStatus(), () -> "스터디를 처음 만들면 " + StudyStatus.DRAFT + " 상태이어야 한다."),
                 () -> assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야한다.")
         );
+    }
+
+    @Test
+    void studyTest(Optional<Study> opParam) {
+        Study nullTdy = null;
+        opParam.get();
+        Optional<Study> studyOp = Optional.ofNullable(nullTdy);
+        if (studyOp.isPresent()) {
+            System.out.println("studyOp is present! - " + studyOp.get());
+        } else {
+            System.out.println("studyOp is empty! - " + studyOp);
+        }
     }
 
     @BeforeAll
