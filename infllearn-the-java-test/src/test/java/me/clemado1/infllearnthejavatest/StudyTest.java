@@ -14,13 +14,15 @@ import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.*;
 
 import java.time.Duration;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StudyTest {
+
+    int value = 1;
 
     @FastTest
     @EnabledOnOs({OS.LINUX, OS.WINDOWS})
@@ -49,18 +51,6 @@ class StudyTest {
                 () -> assertEquals(StudyStatus.DRAFT, study.getStudyStatus(), () -> "스터디를 처음 만들면 " + StudyStatus.DRAFT + " 상태이어야 한다."),
                 () -> assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야한다.")
         );
-    }
-
-    @Test
-    void studyTest(Optional<Study> opParam) {
-        Study nullTdy = null;
-        opParam.get();
-        Optional<Study> studyOp = Optional.ofNullable(nullTdy);
-        if (studyOp.isPresent()) {
-            System.out.println("studyOp is present! - " + studyOp.get());
-        } else {
-            System.out.println("studyOp is empty! - " + studyOp);
-        }
     }
 
     @DisplayName("스터디 만들기")
@@ -107,18 +97,18 @@ class StudyTest {
     }
 
     @BeforeAll
-    static void beforeAll() {
+    void beforeAll() {
         System.out.println("before all");
     }
 
     @AfterAll
-    static void afterAll() {
+    void afterAll() {
         System.out.println("after all");
     }
 
     @BeforeEach
     void beforeEach() {
-        System.out.println("before each");
+        System.out.println("before each - " + value++ + " / " + this);
     }
 
     @AfterEach
