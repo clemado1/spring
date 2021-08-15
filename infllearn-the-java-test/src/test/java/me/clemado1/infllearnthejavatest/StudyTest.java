@@ -20,14 +20,16 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
     int value = 1;
 
+    @Order(1)
     @FastTest
     @EnabledOnOs({OS.LINUX, OS.WINDOWS})
     @EnabledOnJre({JRE.JAVA_11, JRE.JAVA_13, JRE.JAVA_14})
-    @DisplayName("스터디 만들기\uD83D\uDC4D")
+    @DisplayName("스터디 만들기 1")
     void create_new_study() {
         // assumeTrue("LOCAL".equalsIgnoreCase(System.getenv("TEST_ENV")));
         assumingThat("LOCAL".equalsIgnoreCase(System.getenv("TEST_ENV")), () -> System.out.println("local"));
@@ -53,13 +55,14 @@ class StudyTest {
         );
     }
 
-    @DisplayName("스터디 만들기")
+    @Order(2)
+    @DisplayName("스터디 만들기 2")
     @RepeatedTest(value = 10, name = "{displayName}, {currentRepetition}/{totalRepetitions}")
     void create_study(RepetitionInfo repetitionInfo) {
         System.out.println("test " + repetitionInfo.getCurrentRepetition() + "/" + repetitionInfo.getTotalRepetitions());
     }
 
-    @DisplayName("스터디 만들기")
+    @DisplayName("스터디 만들기 3")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(strings = {"1", "2", "3", "4"})
     @NullAndEmptySource
@@ -67,14 +70,14 @@ class StudyTest {
         System.out.println(message);
     }
 
-    @DisplayName("스터디 만들기")
+    @DisplayName("스터디 만들기 4")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(ints = {1, 2, 3, 4})
     void parameterizedTest(@ConvertWith(StudyConverter.class) Study message) {
         System.out.println(message.getLimit());
     }
 
-    @DisplayName("스터디 만들기")
+    @DisplayName("스터디 만들기 5")
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @CsvSource({"10, 'java study", "20, spring study"})
     void csvSourceTest(@AggregateWith(StudyAggregator.class) Study study) {
