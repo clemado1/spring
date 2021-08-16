@@ -18,8 +18,6 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
