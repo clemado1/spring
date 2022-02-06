@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class TemplateMethodTest {
+class TemplateMethodTest {
 
     @Test
     void templateMethodV0() {
@@ -19,7 +19,7 @@ public class TemplateMethodTest {
         log.info("비즈니스 로직 실행1");
         // 비즈니스 로직 종료
         long endTime = System.currentTimeMillis();
-        long resultTime = endTime = startTime;
+        long resultTime = endTime - startTime;
         log.info("resultTime={}", resultTime);
     }
 
@@ -30,7 +30,7 @@ public class TemplateMethodTest {
         log.info("비즈니스 로직 실행2");
         // 비즈니스 로직 종료
         long endTime = System.currentTimeMillis();
-        long resultTime = endTime = startTime;
+        long resultTime = endTime - startTime;
         log.info("resultTime={}", resultTime);
     }
 }
