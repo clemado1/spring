@@ -12,4 +12,14 @@ class ProxyPatternTest {
         client.execute();
         client.execute();
     }
+
+    @Test
+    void cacheProxyTest() {
+        RealSubject realSubject = new RealSubject();
+        CacheProxy cacheProxy = new CacheProxy(realSubject);
+        ProxyPatternClient client = new ProxyPatternClient(cacheProxy);
+        client.execute();
+        client.execute();
+        client.execute();
+    }
 }
