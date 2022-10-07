@@ -12,7 +12,19 @@ public class UncheckedAppTest {
     @Test
     void unchecked() {
         Controller controller = new Controller();
-        Assertions.assertThatThrownBy(() -> controller.request()).isInstanceOf(RuntimeConnectException.class);
+        Assertions.assertThatThrownBy(() -> controller.request()).isInstanceOf(RuntimeSQLException.class);
+    }
+
+    @Test
+    void printEx() {
+        Controller controller = new Controller();
+
+        try {
+            controller.request();
+        } catch (Exception e) {
+//            e.printStackTrace();
+            log.info("ex", e);
+        }
     }
 
     static class Controller {
@@ -24,12 +36,12 @@ public class UncheckedAppTest {
     }
 
     static class Service {
-        NetworkClient networkClient = new NetworkClient();
         Repository repository = new Repository();
+        NetworkClient networkClient = new NetworkClient();
 
         public void logic() {
-            networkClient.call();
             repository.call();
+            networkClient.call();
         }
     }
 
